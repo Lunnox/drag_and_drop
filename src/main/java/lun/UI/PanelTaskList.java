@@ -24,12 +24,13 @@ public class PanelTaskList extends VerticalLayout {
 
     private statusType statusType;
 
-//    @Autowired
-//    private TaskRepository repository;
+    @Autowired
+    private TaskRepository repository;
 
 
     @PostConstruct
     void init() {
+        update();
         initDropAction();
     }
 
@@ -67,14 +68,14 @@ public class PanelTaskList extends VerticalLayout {
 
 
     public void add(Task newObject) {
-    //    repository.save(newObject);
-       // update();
-        addComponent(new MyLabelTest(newObject));
+       repository.save(newObject);
+       update();
+        //addComponent(new MyLabelTest(newObject));
     }
 
 
     private void update() {
-        //setTodos(repository.findAll());
+        setTodos(repository.findAll());
     }
 
     private void setTodos(List<Task> all) {

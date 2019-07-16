@@ -1,5 +1,6 @@
 package lun.UI;
 
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 
@@ -93,7 +94,7 @@ public class drag_and_drop_ui extends UI {
             task.clear();
             task.focus();
         });
-
+        add.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
     }
 
