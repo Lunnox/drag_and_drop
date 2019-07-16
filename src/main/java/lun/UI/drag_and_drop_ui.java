@@ -53,17 +53,20 @@ public class drag_and_drop_ui extends UI {
 
     private void addForm() {
         panelTypeNew.addStyleName(ValoTheme.LAYOUT_CARD);
-        panelTypeNew.setStatusType(statusType.New);
-        panelTypeNew.setCaption(panelTypeNew.getStatusType().name());
-
+        panelTypeNew.setStatusType(statusType.neww.name());
+        panelTypeNew.setCaption(panelTypeNew.getStatusType());
 
         panelTypeProgress.addStyleName(ValoTheme.LAYOUT_CARD);
-        panelTypeProgress.setStatusType(statusType.InProgress);
-        panelTypeProgress.setCaption(panelTypeProgress.getStatusType().name());
+        panelTypeProgress.setStatusType(statusType.inprogress.name());
+        panelTypeProgress.setCaption(panelTypeProgress.getStatusType());
 
         panelTypeDone.addStyleName(ValoTheme.LAYOUT_CARD);
-        panelTypeDone.setStatusType(statusType.Done);
-        panelTypeDone.setCaption(panelTypeDone.getStatusType().name());
+        panelTypeDone.setStatusType(statusType.done.name());
+        panelTypeDone.setCaption(panelTypeDone.getStatusType());
+
+        panelTypeProgress.update();
+        panelTypeDone.update();
+        panelTypeNew.update();
 
 
 
@@ -88,7 +91,7 @@ public class drag_and_drop_ui extends UI {
         root.addComponent(panelTasks);
         add.addClickListener(click -> {
             Task newTask = new Task(task.getValue());
-            newTask.setStatus(statusType.New.name());
+            newTask.setDone(statusType.neww.name());
 
             panelTypeNew.add(newTask);
             task.clear();

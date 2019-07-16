@@ -1,9 +1,9 @@
 package lun.Data;
 
 public enum statusType {
-    New,
-    InProgress,
-    Done,
-    Fail,
-    Unknown
+    neww,
+    inprogress,
+    done,
+    fail,
+    unknown
 }

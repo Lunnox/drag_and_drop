@@ -12,6 +12,46 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    private String text;
+    private String done;
+
+    public Task() {
+    }
+
+    public Task(String text) {
+        this.text = text;
+    }
+
+    public Task(String text, String done) {
+        this.text = text;
+        this.done = done;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+       return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String isDone() {
+        return done;
+    }
+
+    public void setDone(String done) {
+        this.done = done;
+    }
+
+   /*
     private String header;
 
     private String description;
@@ -60,6 +100,6 @@ public class Task {
     }
 
 
-
+*/
 
 }

@@ -16,14 +16,14 @@ public class MyLabelTest extends Label {
 
 
     public MyLabelTest(Task task) {
-        super(task.getHeader());
+        super(task.getText());
         currentTask=task;
 
         initDrag();
-        /*Binder<Task> binder = new Binder<>(Task.class);
-        binder.bindInstanceFields(this);
-        binder.setBean(task);
-*/
+//        Binder<Task> binder = new Binder<>(Task.class);
+//        binder.bindInstanceFields(this);
+//        binder.setBean(task);
+
     }
 
     private void initDrag(){
@@ -38,7 +38,7 @@ public class MyLabelTest extends Label {
                 Notification.show("Drag event was canceled");
             } else {
                 Notification.show("Drag event finished");
-                System.out.println(currentTask.getStatus());
+                System.out.println(currentTask.isDone());
             }
         });
 
@@ -53,12 +53,12 @@ public class MyLabelTest extends Label {
         */
     }
 
-    public statusType getType() {
-        return currentTask.getStatus();
+    public String getType() {
+        return currentTask.isDone();
     }
 
-    public void setType(statusType type) {
-        this.currentTask.setStatus(type.name().toLowerCase());
+    public void setType(String type) {
+        this.currentTask.setDone(type);
     }
 
 

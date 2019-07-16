@@ -15,6 +15,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,16 +23,53 @@ import java.util.Optional;
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class PanelTaskList extends VerticalLayout {
 
-    private statusType statusType;
+    private String statusType;
 
     @Autowired
     private TaskRepository repository;
 
 
+
+
     @PostConstruct
     void init() {
-        update();
+       // update();
         initDropAction();
+    }
+
+    public void setStatusType(String statusType) {
+        this.statusType = statusType;
+    }
+
+    public String getStatusType() {
+        return statusType;
+    }
+
+
+    public void add(Task newObject) {
+        repository.save(newObject);
+        update();
+        //addComponent(new MyLabelTest(newObject));
+    }
+
+
+    public void update() {
+        setTodos(repository.findAll());
+    }
+
+    private void setTodos(List<Task> all) {
+        removeAllComponents();
+        all.forEach(task ->{
+            MyLabelTest item= new MyLabelTest(task);
+            System.out.println(task.isDone() + " "+this.statusType);
+            if (task.isDone().equals(this.statusType)) {
+                addComponent(item);
+            }
+        });
+
+
+
+
     }
 
     private void initDropAction() {
@@ -44,7 +82,7 @@ public class PanelTaskList extends VerticalLayout {
                 MyLabelTest object= (MyLabelTest) dragSource.get();
                 this.addComponent(object);
                 object.setType(this.statusType);
-
+                
                 String message = String.valueOf(event.getDataTransferData("text/html"));
                 if (message != null) {
                     Notification.show("DropEvent with data transfer html: " + message);
@@ -58,36 +96,6 @@ public class PanelTaskList extends VerticalLayout {
 
 
 
-    public void setStatusType(statusType statusType) {
-        this.statusType = statusType;
-    }
 
-    public statusType getStatusType() {
-        return statusType;
-    }
-
-
-    public void add(Task newObject) {
-       repository.save(newObject);
-       update();
-        //addComponent(new MyLabelTest(newObject));
-    }
-
-
-    private void update() {
-        setTodos(repository.findAll());
-    }
-
-    private void setTodos(List<Task> all) {
-        removeAllComponents();
-        all.forEach(task ->{
-            MyLabelTest item= new MyLabelTest(task);
-            if (task.getStatus().equals(this.statusType)) {
-                addComponent(item);
-            }
-
-
-        });
-    }
 
 }
