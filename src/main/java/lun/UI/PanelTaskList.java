@@ -83,7 +83,7 @@ public class PanelTaskList extends VerticalLayout {
                 MyLabelTest object= (MyLabelTest) dragSource.get();
                 this.addComponent(object);
                 object.setType(this.statusType);
-
+                repository.saveAndFlush(object.getCurrentTask());
                 String message = String.valueOf(event.getDataTransferData("text/html"));
                 if (message != null) {
                     Notification.show("DropEvent with data transfer html: " + message);

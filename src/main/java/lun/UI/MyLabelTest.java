@@ -11,6 +11,9 @@ import lun.Data.statusType;
 public class MyLabelTest extends Label {
 
 
+    public Task getCurrentTask() {
+        return currentTask;
+    }
 
     private Task currentTask;
 
