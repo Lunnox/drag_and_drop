@@ -4,6 +4,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 
@@ -30,11 +31,70 @@ public class drag_and_drop_ui extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        setupLayout();
-        addHeader();
-        addForm();
-
+       setupLayout();
+        //addHeader();
+        //addForm();
+        createForm();
     }
+
+    private String value;
+
+    private VerticalLayout statusHolder = new VerticalLayout();
+    private TextField textField = new TextField();
+
+
+    private void createForm() {
+
+        root.addComponent(statusHolder);
+        root.addComponent(textField);
+        root.addComponent(new Button("Set new values", new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                String value = textField.getValue();
+
+                saveValue(drag_and_drop_ui.this, value);
+            }
+        }));
+        root.addComponent(new Button("Reload page", new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                getPage().setLocation(getPage().getLocation());
+            }
+        }));
+
+        showValue(this);
+    }
+
+    private static void saveValue(drag_and_drop_ui ui,
+                                  String value) {
+        // Save to UI instance
+        ui.value = value;
+        // Save to VaadinServiceSession
+        ui.getSession().setAttribute("myValue", value);
+        // Save to HttpSession
+        VaadinService.getCurrentRequest().getWrappedSession()
+                .setAttribute("myValue", value);
+
+        // Show new values
+        showValue(ui);
+    }
+
+    private static void showValue(drag_and_drop_ui ui) {
+        ui.statusHolder.removeAllComponents();
+        ui.statusHolder.addComponent(new Label("Value in UI: " + ui.value));
+        ui.statusHolder.addComponent(new Label(
+                "Value in VaadinServiceSession: "
+                        + ui.getSession().getAttribute("myValue")));
+        ui.statusHolder.addComponent(new Label("Value in HttpSession: "
+                + VaadinService.getCurrentRequest().getWrappedSession()
+                .getAttribute("myValue")));
+    }
+
+
+
+
+    /********************************************************************************
+    */
 
     private void setupLayout() {
         root = new VerticalLayout();
