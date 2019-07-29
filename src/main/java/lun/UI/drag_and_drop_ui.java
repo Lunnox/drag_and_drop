@@ -2,6 +2,8 @@ package lun.UI;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 
 import com.vaadin.server.VaadinService;
@@ -11,13 +13,18 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import lun.Data.Task;
 import lun.Data.statusType;
+import lun.UI.Develop.Authentication;
+import lun.UI.Develop.LoginPage;
+import lun.UI.Develop.OtherSecurePage;
+import lun.UI.Develop.SecurePage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 @SpringUI
 public class drag_and_drop_ui extends UI {
 
-    private VerticalLayout root;
+    public static Authentication AUTH;
+     private VerticalLayout root;
 
     @Autowired
     PanelTaskList panelTypeNew;//= new VerticalLayout();
@@ -31,11 +38,42 @@ public class drag_and_drop_ui extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-       setupLayout();
+        AUTH = new Authentication();
+        new Navigator(this, this);
+
+        getNavigator().addView(LoginPage.NAME, LoginPage.class);
+        getNavigator().setErrorView(LoginPage.class);
+        Page.getCurrent().addUriFragmentChangedListener(new Page.UriFragmentChangedListener() {
+
+            @Override
+            public void uriFragmentChanged(Page.UriFragmentChangedEvent event) {
+                router(event.getUriFragment());
+            }
+        });
+        router("");
+
+      // setupLayout();
         //addHeader();
         //addForm();
-        createForm();
+        //createForm();
+
     }
+
+    private void router(String route){
+        Notification.show(route);
+        if(getSession().getAttribute("user") != null){
+            getNavigator().addView(SecurePage.NAME, SecurePage.class);
+            getNavigator().addView(OtherSecurePage.NAME, OtherSecurePage.class);
+            if(route.equals("!OtherSecure")){
+                getNavigator().navigateTo(OtherSecurePage.NAME);
+            }else{
+                getNavigator().navigateTo(SecurePage.NAME);
+            }
+        }else{
+            getNavigator().navigateTo(LoginPage.NAME);
+        }
+    }
+
 
     private String value;
 
