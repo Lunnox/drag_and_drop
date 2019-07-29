@@ -43,16 +43,31 @@ public class drag_and_drop_ui extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         AUTH = new Authentication();
         new Navigator(this, this);
-        VaadinSession.getCurrent().getSession().setMaxInactiveInterval( ( int ) TimeUnit.MINUTES.toSeconds( 1 ) );
+      //  VaadinSession.getCurrent().getSession().setMaxInactiveInterval( ( int ) TimeUnit.MINUTES.toSeconds( 1 ) );
         getNavigator().addView(LoginPage.NAME, LoginPage.class);
         getNavigator().setErrorView(LoginPage.class);
-        Page.getCurrent().addUriFragmentChangedListener(new Page.UriFragmentChangedListener() {
+        //getNavigator().navigateTo(LoginPage.NAME);
+        Page.getCurrent().addPopStateListener(popStateEvent ->{
+            router(popStateEvent.getPage().getUriFragment());
+        } );//addUriFragmentChangedListener(new Page.UriFragmentChangedListener() {
 
-            @Override
-            public void uriFragmentChanged(Page.UriFragmentChangedEvent event) {
-                router(event.getUriFragment());
+            /*
+
+            addUriFragmentChangedListener(
+               new UriFragmentChangedListener() {
+           public void uriFragmentChanged(
+                   UriFragmentChangedEvent source) {
+               enter(source.getUriFragment());
             }
         });
+
+        // Read the initial URI fragment
+        enter(getPage().getUriFragment());
+
+             */
+
+
+
         router("");
 
       // setupLayout();
