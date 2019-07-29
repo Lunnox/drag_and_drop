@@ -7,6 +7,7 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 
 import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 
@@ -18,6 +19,8 @@ import lun.UI.Develop.LoginPage;
 import lun.UI.Develop.OtherSecurePage;
 import lun.UI.Develop.SecurePage;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.concurrent.TimeUnit;
 
 
 @SpringUI
@@ -40,7 +43,7 @@ public class drag_and_drop_ui extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         AUTH = new Authentication();
         new Navigator(this, this);
-
+        VaadinSession.getCurrent().getSession().setMaxInactiveInterval( ( int ) TimeUnit.MINUTES.toSeconds( 1 ) );
         getNavigator().addView(LoginPage.NAME, LoginPage.class);
         getNavigator().setErrorView(LoginPage.class);
         Page.getCurrent().addUriFragmentChangedListener(new Page.UriFragmentChangedListener() {
@@ -61,7 +64,7 @@ public class drag_and_drop_ui extends UI {
 
     private void router(String route){
         Notification.show(route);
-        if(getSession().getAttribute("user") != null){
+        if((getSession().getAttribute("user") != null) ){
             getNavigator().addView(SecurePage.NAME, SecurePage.class);
             getNavigator().addView(OtherSecurePage.NAME, OtherSecurePage.class);
             if(route.equals("!OtherSecure")){
